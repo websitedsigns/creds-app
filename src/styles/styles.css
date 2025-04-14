@@ -1,0 +1,52 @@
+/* styles/styles.css */
+
+/* Example styles */
+body {
+    background-color: #fdfcfc;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  fontFamily: 'Bebas Neue', sans-serif;
+
+  
+  
+  .container {
+    max-width: 1100px;
+  }
+  
+  h1, h2 {
+    color: #0d0d0d;
+  }
+  
+  button {
+    border-radius: 10px;
+  }
+  
+  /* Additional styling */
+  .card {
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  button:active {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* styles/styles.css */
+.logo {
+    width: 250px;
+    max-width: 100%;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
+  }
+  
+  

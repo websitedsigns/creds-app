@@ -1,0 +1,25 @@
+.coaster-track {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 20px;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  
+  .coaster-fill {
+    height: 100%;
+    background-color: rgb(142, 147, 147);
+    transition: width 0.5s ease-in-out;
+  }
+  
+  .coaster-icon {
+    position: absolute;
+    top: -20px;
+    width: 30px;
+    height: 30px;
+    transition: left 0.5s ease-in-out;
+  }
+  
