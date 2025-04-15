@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import coasterCar from "../assets/credtracker.svg";
 import hyperia from "../assets/hyperia.jpeg";
 import vekoma from "../assets/vekoma.jpeg";
@@ -12,25 +12,42 @@ interface Coaster {
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [coasters, setCreds] = useState<Coaster[]>([]); // Changed to Coaster[]
-  const [topCoaster, setTopCoaster] = useState<Coaster | null>(null); // Changed to Coaster | null
+  const location = useLocation(); // 👈 Watch for route changes
+  const [coasters, setCreds] = useState<Coaster[]>([]);
+  const [topCoaster, setTopCoaster] = useState<Coaster | null>(null);
 
-  useEffect(() => {
+  // Load creds and top coaster from localStorage
+  const loadData = () => {
     const storedCreds = localStorage.getItem("creds");
     if (storedCreds) {
       setCreds(JSON.parse(storedCreds));
     }
 
-    const storedTopCoaster = localStorage.getItem("numberOneCoaster");
-    if (storedTopCoaster) {
-      setTopCoaster(JSON.parse(storedTopCoaster)); // Ensure this is parsed as a Coaster object
-    }
+    const loadData = () => {
+      const storedTopCoaster = localStorage.getItem("topCoaster");
+      if (storedTopCoaster) {
+        const parsedTopCoaster = JSON.parse(storedTopCoaster);
+        setTopCoaster(parsedTopCoaster);
+      }
+    };
+
+    loadData();
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [location]); // 👈 Update when returning to page
+
+  // Optional: refresh if user clicks back or refocuses tab
+  useEffect(() => {
+    window.addEventListener("focus", loadData);
+    return () => window.removeEventListener("focus", loadData);
   }, []);
 
   const currentCreds = coasters.length;
-
   const targetLevels = [5, 10, 25, 50, 100, 200, 250, 300, 400, 500];
   let nextTarget = 0;
+
   for (let i = 0; i < targetLevels.length; i++) {
     if (currentCreds < targetLevels[i]) {
       nextTarget = targetLevels[i];
@@ -51,7 +68,9 @@ const HomePage = () => {
         color: "white",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}
+      >
         <h1 style={{ fontSize: "3rem", color: "black", margin: 0 }}>Creds</h1>
       </div>
 
@@ -93,7 +112,8 @@ const HomePage = () => {
             textAlign: "center",
           }}
         >
-          {currentCreds} &nbsp;|&nbsp; 🎯 {nextTarget - currentCreds} until {nextTarget}
+          {currentCreds} &nbsp;|&nbsp; 🎯 {nextTarget - currentCreds} until{" "}
+          {nextTarget}
         </div>
         <img
           src={coasterCar}
@@ -151,19 +171,27 @@ const HomePage = () => {
             backgroundPosition: "right center",
           }}
           onClick={() =>
-            navigate("/home/rate-coasters", { state: { topCoaster: topCoaster || { name: "Top Pick", rating: 0 } } })
+            navigate("/home/rate-coasters", {
+              state: {
+                topCoaster: topCoaster || { name: "Top Pick", rating: 0 },
+              },
+            })
           }
         >
           <div style={overlayStyle} />
           <div style={cardBodyStyle}>
             <div style={cardTitleStyle}>No1 Coaster</div>
             <div style={cardTextStyle}>
-              <strong>{topCoaster ? topCoaster.name : ""}</strong>
+              <strong>{topCoaster?.name || "No coaster selected"}</strong>
             </div>
             <div
               onClick={(e) => {
                 e.stopPropagation();
-                navigate("/home/rate-coasters", { state: { topCoaster: topCoaster || { name: "Top Pick", rating: 0 } } });
+                navigate("/home/rate-coasters", {
+                  state: {
+                    topCoaster: topCoaster || { name: "Top Pick", rating: 0 },
+                  },
+                });
               }}
               style={cardLinkStyle}
             >
@@ -228,7 +256,7 @@ const overlayStyle: React.CSSProperties = {
   left: 0,
   height: "100%",
   width: "100%",
-  backgroundColor: "rgba(0, 0, 0, 0.4)", // darker background
+  backgroundColor: "rgba(0, 0, 0, 0.4)",
   zIndex: 1,
 };
 
