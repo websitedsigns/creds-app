@@ -23,15 +23,17 @@ const HomePage = () => {
       setCreds(JSON.parse(storedCreds));
     }
 
-    const loadData = () => {
-      const storedTopCoaster = localStorage.getItem("topCoaster");
-      if (storedTopCoaster) {
-        const parsedTopCoaster = JSON.parse(storedTopCoaster);
-        setTopCoaster(parsedTopCoaster);
+    const storedTopCoaster = localStorage.getItem("TopCoaster");
+    if (storedTopCoaster) {
+      try {
+        const parsed = JSON.parse(storedTopCoaster);
+        if (parsed.name && typeof parsed.name === "string") { 
+          setTopCoaster(parsed);
+        }
+      } catch (error) {
+        console.error("Error parsing top coaster:", error);
       }
-    };
-
-    loadData();
+    }
   };
 
   useEffect(() => {
@@ -61,16 +63,8 @@ const HomePage = () => {
   const fillPercentage = Math.min((currentCreds / nextTarget) * 100, 100);
 
   return (
-    <div
-      style={{
-        padding: "20px",
-        fontFamily: "'Bebas Neue', sans-serif",
-        color: "white",
-      }}
-    >
-      <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}
-      >
+    <div style={{ padding: "20px", fontFamily: "'Bebas Neue', sans-serif", color: "white" }}>
+      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
         <h1 style={{ fontSize: "3rem", color: "black", margin: 0 }}>Creds</h1>
       </div>
 
@@ -112,8 +106,7 @@ const HomePage = () => {
             textAlign: "center",
           }}
         >
-          {currentCreds} &nbsp;|&nbsp; 🎯 {nextTarget - currentCreds} until{" "}
-          {nextTarget}
+          {currentCreds} &nbsp;|&nbsp; 🎯 {nextTarget - currentCreds} until {nextTarget}
         </div>
         <img
           src={coasterCar}
@@ -182,7 +175,7 @@ const HomePage = () => {
           <div style={cardBodyStyle}>
             <div style={cardTitleStyle}>No1 Coaster</div>
             <div style={cardTextStyle}>
-              <strong>{topCoaster?.name || "No coaster selected"}</strong>
+              <strong>{topCoaster ? topCoaster.name : "placeholder"}</strong>
             </div>
             <div
               onClick={(e) => {
