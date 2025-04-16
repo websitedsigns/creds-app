@@ -21,10 +21,10 @@ const BottomNav = () => {
       fixed="bottom"
       bg="dark"
       variant="dark"
-      className="justify-content-around border-0"
+      className="justify-content-around border-1"
       style={{
-        padding: '1px 0',
-        borderRadius: '15px 15px 0 0',
+        padding: '15px 0',
+        borderRadius: '5px 5px 0 0',
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
         position: 'fixed',
         bottom: '0',

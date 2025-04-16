@@ -207,51 +207,54 @@ const RateCoastersPage: React.FC = () => {
         })}
       </AnimatePresence>
 
-      {/* Modal */}
-      {modalOpen && (
-        <div className="modal" style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '8px', width: '80%', maxWidth: '500px' }}>
-            <h2>Add a Coaster</h2>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <input
-                type="text"
-                placeholder="Name"
-                value={newCoaster.name || ''}
-                onChange={(e) => setNewCoaster({ ...newCoaster, name: e.target.value })}
-                style={inputStyle}
-              />
-              <input
-                type="text"
-                placeholder="Manufacturer"
-                value={newCoaster.manufacturer || ''}
-                onChange={(e) => setNewCoaster({ ...newCoaster, manufacturer: e.target.value })}
-                style={inputStyle}
-              />
-              <select
-                value={newCoaster.type || ''}
-                onChange={(e) => setNewCoaster({ ...newCoaster, type: e.target.value as Coaster['type'] })}
-                style={inputStyle}
+      {/* Add Button & Modal */}
+      {coasters.length < 10 && (
+        <>
+          <button onClick={() => setModalOpen(true)} style={{ ...buttonStyle, backgroundColor: 'darkgreen', marginTop: '20px' }}>
+            ➕ Add a Coaster
+          </button>
+
+          <AnimatePresence>
+            {modalOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  width: '100vw',
+                  height: '100vh',
+                  background: 'rgba(0, 0, 0, 0.7)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  zIndex: 1000,
+                }}
               >
-                <option value="">Type</option>
-                <option value="Steel">Steel</option>
-                <option value="Wood">Wood</option>
-                <option value="Hybrid">Hybrid</option>
-                <option value="Powered">Powered</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Park"
-                value={newCoaster.park || ''}
-                onChange={(e) => setNewCoaster({ ...newCoaster, park: e.target.value })}
-                style={inputStyle}
-              />
-              <div>
-                <button onClick={addCoaster} style={{ ...buttonStyle, backgroundColor: 'darkgreen' }}>Add Coaster</button>
-                <button onClick={() => setModalOpen(false)} style={{ ...buttonStyle, backgroundColor: 'crimson' }}>Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
+                <div style={{ background: '#222', padding: '30px', borderRadius: '10px', width: '90%', maxWidth: '500px', color: 'white' }}>
+                  <h2 style={{ color: 'gold', fontSize: '2rem' }}>Add a Coaster</h2>
+                  <input type="text" placeholder="Name" value={newCoaster.name || ''} onChange={(e) => setNewCoaster({ ...newCoaster, name: e.target.value })} style={inputStyle} />
+                  <input type="text" placeholder="Manufacturer" value={newCoaster.manufacturer || ''} onChange={(e) => setNewCoaster({ ...newCoaster, manufacturer: e.target.value })} style={inputStyle} />
+                  <select value={newCoaster.type || ''} onChange={(e) => setNewCoaster({ ...newCoaster, type: e.target.value as Coaster['type'] })} style={inputStyle}>
+                    <option value="">Type</option>
+                    <option value="Steel">Steel</option>
+                    <option value="Wood">Wood</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Powered">Powered</option>
+                  </select>
+                  <input type="text" placeholder="Park" value={newCoaster.park || ''} onChange={(e) => setNewCoaster({ ...newCoaster, park: e.target.value })} style={inputStyle} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '15px' }}>
+                    <button onClick={addCoaster} style={{ ...buttonStyle, backgroundColor: 'darkgreen' }}>✅ Add</button>
+                    <button onClick={() => setModalOpen(false)} style={{ ...buttonStyle, backgroundColor: 'crimson' }}>✖ Cancel</button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
       )}
     </div>
   );

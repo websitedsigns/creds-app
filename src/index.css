@@ -12,3 +12,24 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
+
+/* index.css or App.css */
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #f5f5f5 !important;
+}
+
+body.dark-mode a,
+body.dark-mode .nav-link,
+body.dark-mode .dropdown-item {
+  color: #f5f5f5 !important;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .dropdown-menu {
+  background-color: #1e1e1e !important;
+}
+
+body.dark-mode .slider {
+  background-color: #444 !important;
+}
